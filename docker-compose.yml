@@ -1,0 +1,40 @@
+services:
+  base-datos:
+    image: postgres:15-alpine
+    container_name: helpdesk_db_conteiner
+    restart: always
+    environment:
+      POSTGRES_DB=${DB_NAME}
+      POSTGRES_USER=${DB_USER}
+      POSTGRES_PASSWORD=4{DB_PASS}
+    ports:
+      "5432:5432"
+    volumes:
+      postgres_data:/var/lib/postgresql/data
+    networks:
+      - helpdesk-network
+
+  backend-java:
+    build: 
+      context: ./backend-helpdesk
+      dockerfile: Dockerfile
+    container_name: helpdesk_backend_conteiner
+    restart: always
+    ports:
+      "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://base-datos:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - base-datos
+    networks:
+      - helpdesk-network
+
+volumes:
+  postgres_data
+
+networks:
+  helpdesk-network:
+    driver: bridge

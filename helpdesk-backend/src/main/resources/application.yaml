@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: heldesk-backend
+
+  datasources:
+    url: jdbc:postgresql://base-datos:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    show-sql: true
