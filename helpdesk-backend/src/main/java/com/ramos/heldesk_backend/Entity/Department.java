@@ -34,4 +34,7 @@ public class Department {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_responsable", nullable = true)
     private User responsable;
+
+    @OneToMany(mappedBy = "departamento", fetch = FetchType.LAZY)
+    private List<Ticket> tickets;
 }
